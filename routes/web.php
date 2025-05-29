@@ -2,19 +2,23 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\VisitaController;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('hello');
 })->name('home');
 
-Route::get('/hello', function () {
-    return Inertia::render('hello');})->name('hello');
+Route::get('/salida', function () {
+    return Inertia::render('salida');})->name('salida');
+    
+Route::get('/ingreso', function () {
+    return Inertia::render('ingreso');})->name('ingreso');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
-});
+Route::get('/visita/{id}', [VisitaController::class, 'show'])->name('visita');
+
+Route::get('/visitas/historico', function (){
+    return Inertia::render('Visitas/Historico');
+}) ->name('historico');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
