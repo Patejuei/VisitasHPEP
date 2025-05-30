@@ -13,7 +13,7 @@ export default function Hello() {
     return (
         <>
             <Head title="Seleccione Requerimiento" />
-            <Card className="mx-4 my-2 h-full">
+            <Card className="mx-12 my-4 h-full">
                 <CardHeader>
                     <CardTitle>Registro de Visitas</CardTitle>
                     <CardDescription>Sistema de registro y verificacion de visitas a los usuarios del hospital</CardDescription>
@@ -38,7 +38,7 @@ export default function Hello() {
                             </CardHeader>
                             <CardFooter>
                                 <Button className="w-full" asChild>
-                                    <Link href={route('salida')}>Registrar</Link>
+                                    <Link href={route('restriccion')}>Registrar</Link>
                                 </Button>
                             </CardFooter>
                         </Card>
