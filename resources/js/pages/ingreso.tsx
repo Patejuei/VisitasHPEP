@@ -13,14 +13,21 @@ import { Toaster } from "@/components/ui/sonner";
 import IngresoVerificacion from "@/components/ingreso-verificacion";
 import { Head } from "@inertiajs/react";
 
+import { VisitaData } from "@/types/visits";
+
 
 export default function Ingreso() {
-  const [visita, setVisita] = useState({
-    rutPaciente : "",
-    dvPaciente : "",
-    rutVisitante : "",
-    dvVisitante : "",
-  });
+  const [datosVisita, setDatosVisita] = useState<VisitaData>({
+    nombre: "",
+    apellido_paterno: "",
+    apellido_materno: "",
+    telefono: 0,
+    direccion: "",
+    rutPaciente: "",
+    dvPaciente: "",
+    rutVisitante: "",
+    dvVisitante: ""
+  })
   const [verificar, setVerificar] = useState("NoVerificado");
 
   return <>
@@ -37,9 +44,9 @@ export default function Ingreso() {
       </CardDescription>
     </CardHeader>
     <CardContent className="flex h-full justify-left">
-      <IngresoVerificacion data={visita} setData={setVisita} state={verificar} setState={setVerificar} />
+      <IngresoVerificacion data={datosVisita} setData={setDatosVisita} state={verificar} setState={setVerificar} />
     </CardContent>
   </Card>
-  <Toaster richColors/>
+  <Toaster richColors visibleToasts={10}/>
 </>
 }

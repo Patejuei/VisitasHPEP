@@ -8,8 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 export function isValidRut(rut: string, dv: string): boolean {
     if (!rut) return false;
 
+    // console.log(`Validating RUT: ${rut}, DV: ${dv}`);
     const body = rut.replace(/[^0-9kK]/g, '').toUpperCase();
     const cleanDv = dv.replace(/[^0-9kK]/g, '').toUpperCase();
+    // console.log (`Body: ${body}, Clean DV: ${cleanDv}`);
 
     if (body.length < 7 || body.length > 8) return false;
 
@@ -23,6 +25,7 @@ export function isValidRut(rut: string, dv: string): boolean {
 
     const calculatedDv = (11 - (sum % 11)) % 11;
     const expectedDv = calculatedDv === 10 ? 'K' : calculatedDv.toString();
+    // console.log(`Calculated DV: ${calculatedDv}, Expected DV: ${expectedDv}`);
 
     return cleanDv === expectedDv;
 }
