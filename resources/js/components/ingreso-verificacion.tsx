@@ -19,8 +19,8 @@ export default function IngresoVerificacion({
 }: {
     data: VisitaData;
     setData: (value: VisitaData) => void;
-    state: string;
-    setState: (state: string) => void;
+    state: boolean;
+    setState: (state: boolean) => void;
 }) {
     const [restricciones, setRestricciones] = useState<RestriccionData[]>([]);
 
@@ -53,7 +53,7 @@ export default function IngresoVerificacion({
 
     useEffect(() => {
         // Check if the state is 'Verificado' to set the verifyVariant
-        if (state === 'Verificado') {
+        if (state) {
             setVerifyVariant(true);
         } else {
             setVerifyVariant(false);
@@ -61,24 +61,26 @@ export default function IngresoVerificacion({
     }, [state]);
 
     const handleVerify = () => {
+        // console.log(restricciones, restricciones.length);
         if (restricciones.length === 0) {
-            setState('Verificado');
+            setState(true);
             toast.info('INGRESO VERIFICADO', {
                 description: 'Visita sin problemas en el registro.',
                 duration: 3000,
             });
         } else {
             restricciones.forEach((item) => {
+                // console.log(item, data);
                 if (
                     item.rutPaciente === data.rutPaciente &&
                     item.dvPaciente === data.dvPaciente &&
-                    item.rutVisitante === data.rutVisitante &&
-                    item.dvVisitante === data.dvVisitante
+                    item.rutVisita === data.rutVisitante &&
+                    item.dvVisita === data.dvVisitante
                 ) {
-                    setState('Restriccion');
+                    setState(false);
                     toast.error('INGRESO DENEGADO', { description: 'El paciente tiene restricciones de visita.', duration: 3000 });
                 } else {
-                    setState('Verificado');
+                    setState(true);
                     toast.info('INGRESO VERIFICADO', {
                         description: 'Visita sin problemas en el registro.',
                         duration: 3000,
@@ -88,18 +90,25 @@ export default function IngresoVerificacion({
         }
     };
     async function onSubmit(values: z.infer<typeof validationSchema>) {
-        await fetch(`/restricciones/${values.rutPaciente}`).then((response) => {
-            if (response.ok) {
-                response.json().then((data) => {
-                    console.log(data);
-                    setRestricciones(data);
-                });
-            }
-        }).catch((error) => {
-            console.error('Error fetching restrictions:', error);
-            toast.error('Error al verificar restricciones', { duration: 3000 });
-        });
-        handleVerify();
+        await fetch(`/restricciones/${values.rutPaciente}`)
+            .then((response) => {
+                if (response.ok) {
+                    response.json().then((object) => {
+                        setRestricciones([]);
+                        object.data.forEach((value: RestriccionData) => {
+                            // console.log(value);
+                            restricciones.push(value);
+                            // setRestricciones([...restricciones, value]);
+                        });
+                        // console.log(restricciones);
+                        handleVerify();
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching restrictions:', error);
+                toast.error('Error al verificar restricciones', { duration: 3000 });
+            });
     }
 
     useEffect(() => {
@@ -155,7 +164,7 @@ export default function IngresoVerificacion({
                         )}
                     />
                     <p className="px-6"> o </p>
-                    <Button className="cursor-pointer" disabled={verifyVariant}>
+                    <Button className="cursor-pointer" type="button" disabled={verifyVariant}>
                         <Search />
                         Buscar por Nombre
                     </Button>

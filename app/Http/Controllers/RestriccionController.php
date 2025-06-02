@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Restricciones;
-use Illuminate\contracts\Routing\ResponseFactory;
-
+use Illuminate\Support\Facades\DB;
 
 class RestriccionController extends Controller
 {
@@ -67,8 +66,10 @@ class RestriccionController extends Controller
     public function show(string $rutPaciente)
     {
         try {
-            $restricciones = Restricciones::where('rutPaciente', $rutPaciente)
-                ->get(['id', 'rutPaciente', 'dvPaciente', 'rutVisita', 'dvVisita', 'motivo']);
+            $restricciones = DB::table('restricciones')
+                ->select('id', 'rutPaciente', 'dvPaciente', 'rutVisita', 'dvVisita', 'motivo')
+                ->where('rutPaciente', '=', $rutPaciente)
+                ->get();
             // if ($restricciones->isEmpty()) {
             //     return response()->json([
             //         'status' => 'error',
@@ -77,7 +78,10 @@ class RestriccionController extends Controller
             // }
             return response()->json([
                 'status' => 'success',
-                'data' => $restricciones
+                'data' => $restricciones,
+                'inputData' => [
+                    'rutPaciente' => $rutPaciente
+                ]
             ]);
         } catch (\Exception $e) {
             return response()->json([

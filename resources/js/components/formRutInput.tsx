@@ -19,8 +19,8 @@ export default function FormRutInput() {
     const [data, setData] = useState<RestriccionData>({
         rutPaciente: '',
         dvPaciente: '',
-        rutVisitante: '',
-        dvVisitante: '',
+        rutVisita: '',
+        dvVisita: '',
         motivo: '',
     });
 
@@ -32,8 +32,8 @@ export default function FormRutInput() {
         dvPaciente: z.custom<string>((val) => isValidRut(data.rutPaciente, val), {
             message: 'El dígito verificador del paciente es inválido',
         }),
-        rutVisitante: z.string().min(1, 'El RUT del visitante es obligatorio'),
-        dvVisitante: z.custom<string>((val) => isValidRut(data.rutVisitante, val), {
+        rutVisita: z.string().min(1, 'El RUT del visitante es obligatorio'),
+        dvVisita: z.custom<string>((val) => isValidRut(data.rutVisita, val), {
             message: 'El dígito verificador del visitante es inválido',
         }),
         motivo: z.string().min(1, { message: 'El motivo de la restricción es obligatorio' }),
@@ -41,11 +41,18 @@ export default function FormRutInput() {
 
     const form = useForm<z.infer<typeof validationSchema>>({
         resolver: zodResolver(validationSchema),
+        defaultValues: {
+            rutPaciente: '',
+            dvPaciente: '',
+            rutVisita: '',
+            dvVisita: '',
+            motivo: '',
+        },
         values: {
             rutPaciente: data.rutPaciente,
             dvPaciente: data.dvPaciente,
-            rutVisitante: data.rutVisitante,
-            dvVisitante: data.dvVisitante,
+            rutVisita: data.rutVisita,
+            dvVisita: data.dvVisita,
             motivo: data.motivo,
         },
     });
@@ -57,17 +64,21 @@ export default function FormRutInput() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
             },
             body: JSON.stringify(values),
         })
             .then((response) => {
-                if (!response.ok) {
+                if (response.ok) {
                     toast.success('Restricción ingresada correctamente')
                     form.reset();
-                }
-            })
+                } else {
+                    response.json().then((data) => {
+                        console.error(data.message);
+                })
+            }})
             .catch((error) => {
-                console.error('Error al ingresar la restricción:', error);
+                console.log('Error al ingresar la restricción:', error);
                 toast.error('Error al ingresar la restricción');
             });
     }
@@ -84,18 +95,6 @@ export default function FormRutInput() {
                 <Label>Rut del Paciente</Label>
                 <div className="flex flex-row align-middle">
                   
-                    <FormField
-                        // control={form.control}
-                        name="_token"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <input {...field } type="hidden"  value={document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
                     <FormField
                         control={form.control}
                         name="rutPaciente"
@@ -146,7 +145,7 @@ export default function FormRutInput() {
                 <div className="flex flex-row align-middle">
                     <FormField
                         control={form.control}
-                        name="rutVisitante"
+                        name="rutVisita"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
@@ -165,7 +164,7 @@ export default function FormRutInput() {
                     <p className="px-4"> - </p>
                     <FormField
                         control={form.control}
-                        name="dvVisitante"
+                        name="dvVisita"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
@@ -174,8 +173,8 @@ export default function FormRutInput() {
                             </FormItem>
                         )}
                     />
-                    <Label className="px-6">Motivo de la restriccion</Label>
                 </div>
+                    <Label>Motivo de la restriccion</Label>
                     <FormField
                         control={form.control}
                         name="motivo"
