@@ -1,3 +1,5 @@
+import { StringValidation } from "zod";
+
 export interface VisitaData {
     nombre: string;
     apellido_paterno: string;
@@ -45,4 +47,14 @@ export interface VisitaViewData {
     visitante_dv: string;
     visitante_telefono: string;
     visitante_direccion: string;
+}
+
+export interface VisitaHistoricoData {
+    id: number;
+    fecha_ingreso: string;
+    fecha_salida: string | null;
+    paciente_nombre: string;
+    paciente_apellido: string;
+    visitante_nombre: string;
+    visitante_apellido: string;
 }

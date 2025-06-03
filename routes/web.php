@@ -22,14 +22,14 @@ Route::get('/ingreso', function () {
     return Inertia::render('ingreso');})->name('ingreso');
 
 Route::get('/visita/{id}', [VisitaController::class, 'show'])->name('visita');
-
+Route::get('/visitas/historico/all', [VisitasController::class, 'indexAll'])->name('visitas.indexAll');
 Route::post('/visitas', [VisitasController::class, 'store'])->name('visitas.store');
 Route::get('/visitas', [VisitasController::class, 'index'])->name('visitas.index');
 Route::get('/visitas/{id}', [VisitasController::class, 'show'])->name('visitas.show');
 Route::get('/visitantes/{rut}', [VisitanteController::class, 'show'])->name('visitantes.show');
 Route::patch('/visitas', [VisitasController::class, 'update'])->name('visitas.update');
 Route::post('/visitantes', [VisitanteController::class, 'create'])->name('visitantes.create');
-Route::get('/visitas/historico', function (){
+Route::get('/historico', function (){
     return Inertia::render('Visitas/Historico');
 }) ->name('historico');
 

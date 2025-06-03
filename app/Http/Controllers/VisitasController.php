@@ -31,12 +31,27 @@ class VisitasController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function indexAll()
     {
-        
+        try {
+            $visitas = DB::table('visitas')
+                ->join('visitantes', 'visitas.visitante_rut', '=', 'visitantes.rut')
+                ->join('pacientes', 'visitas.paciente_rut', '=', 'pacientes.rut')
+                ->select(
+                    'visitas.id',
+                    'visitas.fecha_ingreso',
+                    'visitas.fecha_salida',
+                    'visitantes.nombre as visitante_nombre',
+                    'visitantes.apellido_paterno as visitante_apellido',
+                    'pacientes.nombre as paciente_nombre',
+                    'pacientes.apellido_paterno as paciente_apellido'
+                )
+                ->orderByDesc('visitas.fecha_ingreso')
+                ->get();
+            return response()->json($visitas, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al obtener las visitas: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
