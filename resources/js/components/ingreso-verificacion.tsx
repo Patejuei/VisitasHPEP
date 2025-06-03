@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import BuscarPacienteDialog from './buscarPaciente_dialog';
 
 export default function IngresoVerificacion({
     data,
@@ -23,6 +24,8 @@ export default function IngresoVerificacion({
     setState: (state: boolean) => void;
 }) {
     const [restricciones, setRestricciones] = useState<RestriccionData[]>([]);
+
+    const [openDialog, setOpenDialog] = useState(false);
 
     const validationSchema = z.object({
         rutPaciente: z.string().min(1, { message: 'El RUT del paciente es obligatorio' }),
@@ -183,10 +186,17 @@ export default function IngresoVerificacion({
                         )}
                     />
                     <p className="px-6"> o </p>
+                    <BuscarPacienteDialog
+                        open={openDialog}
+                        onOpenChange={() => {
+                            setOpenDialog(!openDialog);
+                        }}
+                    >
                     <Button className="cursor-pointer" type="button" disabled={verifyVariant}>
                         <Search />
                         Buscar por Nombre
                     </Button>
+                    </BuscarPacienteDialog>
                 </div>
 
                 <Label>Rut del Visitante</Label>
