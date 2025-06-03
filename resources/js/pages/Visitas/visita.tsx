@@ -39,7 +39,7 @@ export default function Visita({ id }: { id: string }) {
     return (
         <>
             <Head title={`Visita`} />
-            <Card>
+            <Card className="mx-12 my-4 h-full">
                 <CardHeader>
                     <CardTitle>Informacion de la Visita <Link href={route('home')} className={buttonVariants({variant: "outline"})}> <ArrowLeft/>Volver</Link></CardTitle>
                 </CardHeader>

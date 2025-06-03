@@ -4,23 +4,14 @@ import { Eye, LogOut } from 'lucide-react';
 import { Button, buttonVariants } from './ui/button';
 import { TableCell, TableRow } from './ui/table';
 import { TableRowProps } from '@/types/visits';
+import { formatDateOptions } from '@/lib/utils';
 
 export function HomeTableRow({ visitante_nombre, visitante_apellido, fecha_ingreso, id }: TableRowProps)  {
     const fecha_ingreso_date = new Date(fecha_ingreso);
-    // ...existing code...
-    const dateOptions: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'short',
-        day: '2-digit',
-        hour: 'numeric',
-        minute: '2-digit',
-        second: '2-digit',
-    };
-// ...existing code...
     return (
         <TableRow>
             <TableCell>{visitante_nombre} {visitante_apellido}</TableCell>
-            <TableCell>{fecha_ingreso_date.toLocaleDateString('ES-cl', dateOptions)}</TableCell>
+            <TableCell>{fecha_ingreso_date.toLocaleDateString('ES-cl', formatDateOptions)}</TableCell>
             <TableCell>
                 <TooltipProvider>
                     <Tooltip>

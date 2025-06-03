@@ -4,6 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { formatDateOptions } from "@/lib/utils";
 
 interface VisitaVisitanteCardProps {
   nombre: string;
@@ -30,6 +31,9 @@ export default function VisitaVisitanteCard({
   fecha_ingreso,
   fecha_salida,
 }: VisitaVisitanteCardProps) {
+  const fechaIngreso = new Date(fecha_ingreso);
+  const fechaSalida = fecha_salida ? new Date(fecha_salida) : null;
+
   return (
     <Card className="card w-full my-4">
       <CardHeader>
@@ -48,11 +52,11 @@ export default function VisitaVisitanteCard({
           <h3>ID Tarjeta</h3>
           <h6>{id_tarjeta}</h6>
           <h3>Fecha Ingreso</h3>
-          <h6>{fecha_ingreso}</h6>
+          <h6>{fechaIngreso.toLocaleDateString("ES-cl", formatDateOptions)}</h6>
           {fecha_salida && (
             <>
               <h3>Fecha Salida</h3>
-              <h6>{fecha_salida}</h6>
+              <h6>{fechaSalida?.toLocaleDateString("ES-cl", formatDateOptions)}</h6>
             </>
           )}
         </div>
