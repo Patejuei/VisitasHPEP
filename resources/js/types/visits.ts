@@ -26,3 +26,22 @@ export interface TableRowProps {
     fecha_ingreso: string;
     id: string;
 }
+
+export interface VisitaViewData {
+      fecha_ingreso: string,
+      fecha_salida: string | null,
+      id_tarjeta: string,
+      paciente_apellido: string,
+      paciente_nombre: string,
+      paciente_rut: string,
+      paciente_dv: string,
+      paciente_apellido_materno: string,
+      paciente_unidad: string,
+      visitante_nombre: string,
+      visitante_apellido: string,
+      visitante_apellido_materno: string,
+      visitante_rut: string,
+      visitante_dv: string,
+      visitante_telefono: string,
+      visitante_direccion: string,
+}

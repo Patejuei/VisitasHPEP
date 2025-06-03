@@ -74,7 +74,25 @@ class VisitasController extends Controller
         try{
             $visita = DB::table('visitas')
                 ->join('visitantes', 'visitas.visitante_rut', '=', 'visitantes.rut')
-                ->select()
+                ->join('pacientes', 'visitas.paciente_rut', '=', 'pacientes.rut')
+                ->select(
+                    'visitas.fecha_ingreso',
+                    'visitas.fecha_salida',
+                    'visitantes.rut as visitante_rut',
+                    'visitantes.dv as visitante_dv',
+                    'visitantes.nombre as visitante_nombre',
+                    'visitantes.apellido_paterno as visitante_apellido',
+                    'visitantes.apellido_materno as visitante_apellido_materno',
+                    'visitantes.telefono as visitante_telefono',
+                    'visitantes.direccion as visitante_direccion',
+                    'pacientes.rut as paciente_rut',
+                    'pacientes.dv as paciente_dv',
+                    'pacientes.nombre as paciente_nombre',
+                    'pacientes.apellido_paterno as paciente_apellido',
+                    'pacientes.apellido_materno as paciente_apellido_materno',
+                    'pacientes.unidad as paciente_unidad',
+                    'visitas.id_tarjeta'
+                )
                 ->where('visitas.id', $id)
                 ->first();
             return response()->json($visita, 200);
