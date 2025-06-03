@@ -5,9 +5,11 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 import { TableRowProps } from '@/types/visits';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { Toaster } from 'sonner';
 
 export default function Hello() {
     const [reg_visitas, setRegVisitas] = useState<TableRowProps[]>([]);
+    const [selectedVisita, setSelectedVisita] = useState(0);
 
     useEffect(() => {
         fetch(route('visitas.index')).then((response) =>
@@ -16,7 +18,7 @@ export default function Hello() {
                 setRegVisitas(data);
             }),
         );
-    }, []);
+    }, [selectedVisita]);
     return (
         <>
             <Head title="Seleccione Requerimiento" />
@@ -80,6 +82,7 @@ export default function Hello() {
                                             visitante_apellido={visita.visitante_apellido}
                                             fecha_ingreso={visita.fecha_ingreso}
                                             id={visita.id}
+                                            setSelection={setSelectedVisita}
                                         />
                                     ))}
                                 </TableBody>
@@ -88,6 +91,7 @@ export default function Hello() {
                     </div>
                 </CardContent>
             </Card>
+            <Toaster richColors />
         </>
     );
 }

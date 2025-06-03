@@ -112,9 +112,23 @@ class VisitasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        try {
+            $request->validate([
+                'fecha_salida' => 'required|date',
+                'id' => 'required|integer|exists:visitas,id',
+            ]);
+            $id = $request->input('id');
+
+            $visita = Visita::findOrFail($id);
+            $visita->fecha_salida = $request->input('fecha_salida');
+            $visita->save();
+
+            return response()->json(['message' => 'Visita actualizada exitosamente'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al actualizar la visita: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
