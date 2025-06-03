@@ -2,14 +2,21 @@ import { HomeTableRow } from '@/components/home-tablerow';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { TableRowProps } from '@/types/visits';
 import { Head, Link } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 export default function Hello() {
-    const reg_visitas = [
-        { id: '1', name: 'Juan Perez', date: '2023-10-01 10:00' },
-        { id: '2', name: 'Maria Lopez', date: '2023-10-01 11:00' },
-        // Puedes agregar más registros de visitas aquí
-    ];
+    const [reg_visitas, setRegVisitas] = useState<TableRowProps[]>([]);
+
+    useEffect(() => {
+        fetch(route('visitas.index')).then((response) =>
+            response.json().then((data) => {
+                console.log(data);
+                setRegVisitas(data);
+            }),
+        );
+    }, []);
     return (
         <>
             <Head title="Seleccione Requerimiento" />
@@ -60,14 +67,20 @@ export default function Hello() {
                             <Table className="w-200">
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead className="w-[250px] font-bold" >Nombre</TableHead>
-                                        <TableHead className="w-[150px] font-bold" >Fecha Ingreso</TableHead>
-                                        <TableHead className="w-[100px] font-bold" >Acciones</TableHead>
+                                        <TableHead className="w-[250px] font-bold">Nombre</TableHead>
+                                        <TableHead className="w-[150px] font-bold">Fecha Ingreso</TableHead>
+                                        <TableHead className="w-[100px] font-bold">Acciones</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {reg_visitas.map((visita) => (
-                                        <HomeTableRow key={visita.id} name={visita.name} date={visita.date} id={visita.id} />
+                                        <HomeTableRow
+                                            key={visita.id}
+                                            visitante_nombre={visita.visitante_nombre}
+                                            visitante_apellido={visita.visitante_apellido}
+                                            fecha_ingreso={visita.fecha_ingreso}
+                                            id={visita.id}
+                                        />
                                     ))}
                                 </TableBody>
                             </Table>

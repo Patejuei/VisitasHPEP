@@ -25,6 +25,7 @@ Route::get('/visita/{id}', [VisitaController::class, 'show'])->name('visita');
 
 Route::post('/visitas', [VisitasController::class, 'store'])->name('visitas.store');
 Route::get('/visitas', [VisitasController::class, 'index'])->name('visitas.index');
+Route::get('/visitantes/{rut}', [VisitanteController::class, 'show'])->name('visitantes.show');
 
 Route::post('/visitantes', [VisitanteController::class, 'create'])->name('visitantes.create');
 Route::get('/visitas/historico', function (){

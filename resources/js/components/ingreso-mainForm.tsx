@@ -91,7 +91,7 @@ export default function IngresoMainForm({
                 console.log('Visitante creado:', data);
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error.message);
                 toast.error('Error al crear el visitante');
             });
         await fetch(route('visitas.store'), {

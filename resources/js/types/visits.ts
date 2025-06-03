@@ -19,3 +19,10 @@ export interface RestriccionData {
       dvVisita: string,
       motivo: string,
 }
+
+export interface TableRowProps {
+    visitante_nombre: string;
+    visitante_apellido: string;
+    fecha_ingreso: string;
+    id: string;
+}

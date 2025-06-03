@@ -105,9 +105,28 @@ export default function IngresoVerificacion({
                     });
                 }
             })
+            .then(async () => {
+                await fetch(`/visitantes/${data.rutVisitante}`).then((response) => {
+                    if (response.ok) {
+                        response.json().then((object) => {
+                            console.log(object)
+                            setData({
+                                ...data,
+                                nombre: object.nombre,
+                                apellido_paterno: object.apellido_paterno,
+                                apellido_materno: object.apellido_materno,
+                                telefono: object.telefono,
+                                direccion: object.direccion,
+                            });
+                        });
+                    } else {
+                        console.error('Visitante no encontrado');
+                    }
+            })
             .catch((error) => {
                 console.error('Error fetching restrictions:', error);
                 toast.error('Error al verificar restricciones', { duration: 3000 });
+            });
             });
     }
 
