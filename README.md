@@ -26,3 +26,9 @@
     * Visualizacion de las visitas que no se han retirado
     * Botones para visualizar y para registrar la salida de la visita
     * Actualizacion de la lista al momento de salir una visita
+
+## Pendiente
+ - [ ] Optimizacion de la seguridad.
+ - [ ] Optimizacion de los componentes.
+ - [ ] Implementacion de un sistema de LogIn.
+ - [ ] Asegurar las rutas con peticiones.
