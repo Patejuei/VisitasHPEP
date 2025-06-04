@@ -1,7 +1,5 @@
 # Sistema de registro de visitas para el Hospital Psiquiátrico El Peral
 
----
-
 ## Objetivos
   - Registrar se forma sencilla y centralizada el ingreso de las visitas al hospital.
   - Verificar la validez de la informacion de los visitantes.
