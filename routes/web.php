@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PacienteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\VisitaController;
@@ -32,6 +33,8 @@ Route::post('/visitantes', [VisitanteController::class, 'create'])->name('visita
 Route::get('/historico', function (){
     return Inertia::render('Visitas/Historico');
 }) ->name('historico');
+
+Route::get('/pacientes', [PacienteController::class, 'index'])->name('getPacientes');
 
 // require __DIR__.'/settings.php';
 // require __DIR__.'/auth.php';

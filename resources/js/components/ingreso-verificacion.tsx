@@ -191,6 +191,8 @@ export default function IngresoVerificacion({
                         onOpenChange={() => {
                             setOpenDialog(!openDialog);
                         }}
+                        formData={data}
+                        setFormData={setData}
                     >
                     <Button className="cursor-pointer" type="button" disabled={verifyVariant}>
                         <Search />

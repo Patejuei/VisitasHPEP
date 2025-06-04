@@ -1,4 +1,3 @@
-import { StringValidation } from "zod";
 
 export interface VisitaData {
     nombre: string;

@@ -12,8 +12,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { z } from 'zod';
 //import hooks
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import BuscarPacienteDialog from './buscarPaciente_dialog';
 
 export default function FormRutInput() {
     const [data, setData] = useState<RestriccionData>({
@@ -24,6 +25,7 @@ export default function FormRutInput() {
         motivo: '',
     });
 
+    const [openDialog, setOpenDialog] = useState(false);
     const handleChange = ({ target }: { target: HTMLInputElement | HTMLTextAreaElement }) => {
         setData({ ...data, [target.name]: target.value });
     };
@@ -58,7 +60,7 @@ export default function FormRutInput() {
     });
 
     async function onSubmit(values: z.infer<typeof validationSchema>) {
-       console.log(JSON.stringify(values))
+        console.log(JSON.stringify(values));
         // Aquí puedes manejar el envío del formulario, por ejemplo, enviarlo a un servidor
         await fetch(route('restricciones.store'), {
             method: 'POST',
@@ -70,13 +72,14 @@ export default function FormRutInput() {
         })
             .then((response) => {
                 if (response.ok) {
-                    toast.success('Restricción ingresada correctamente')
+                    toast.success('Restricción ingresada correctamente');
                     form.reset();
                 } else {
                     response.json().then((data) => {
                         console.error(data.message);
-                })
-            }})
+                    });
+                }
+            })
             .catch((error) => {
                 console.log('Error al ingresar la restricción:', error);
                 toast.error('Error al ingresar la restricción');
@@ -84,17 +87,16 @@ export default function FormRutInput() {
     }
 
     useEffect(() => {
-            Object.values(form.formState.errors).forEach((error) => {
-                toast.error(error.message);
-            });
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [form.formState.isSubmitted]);
+        Object.values(form.formState.errors).forEach((error) => {
+            toast.error(error.message);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [form.formState.isSubmitted]);
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} method='POST'>
+            <form onSubmit={form.handleSubmit(onSubmit)} method="POST">
                 <Label>Rut del Paciente</Label>
                 <div className="flex flex-row align-middle">
-                  
                     <FormField
                         control={form.control}
                         name="rutPaciente"
@@ -135,10 +137,12 @@ export default function FormRutInput() {
                         )}
                     />
                     <p className="px-6"> o </p>
-                    <Button className="cursor-pointer">
-                        <Search />
-                        Buscar por Nombre
-                    </Button>
+                    <BuscarPacienteDialog formData={data} setFormData={setData} onOpenChange={() => setOpenDialog(!openDialog)} open={openDialog}>
+                        <Button className="cursor-pointer">
+                            <Search />
+                            Buscar por Nombre
+                        </Button>
+                    </BuscarPacienteDialog>
                 </div>
 
                 <Label>Rut del Visitante</Label>
@@ -174,23 +178,19 @@ export default function FormRutInput() {
                         )}
                     />
                 </div>
-                    <Label>Motivo de la restriccion</Label>
-                    <FormField
-                        control={form.control}
-                        name="motivo"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Textarea
-                                        {...field}
-                                        placeholder="Motivo de la restriccion"
-                                        onChange={handleChange}
-                                    />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                <Button className="w-36 cursor-pointer my-8" type="submit">
+                <Label>Motivo de la restriccion</Label>
+                <FormField
+                    control={form.control}
+                    name="motivo"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <Textarea {...field} placeholder="Motivo de la restriccion" onChange={handleChange} />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <Button className="my-8 w-36 cursor-pointer" type="submit">
                     Ingresar
                 </Button>
             </form>
