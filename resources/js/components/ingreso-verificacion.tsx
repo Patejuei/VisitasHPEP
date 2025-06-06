@@ -93,7 +93,7 @@ export default function IngresoVerificacion({
         }
     };
     async function onSubmit(values: z.infer<typeof validationSchema>) {
-        await fetch(`/restricciones/${values.rutPaciente}`)
+        await fetch(route('restricciones.all', values.rutPaciente))
             .then((response) => {
                 if (response.ok) {
                     response.json().then((object) => {

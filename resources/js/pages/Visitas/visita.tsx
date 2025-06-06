@@ -27,7 +27,7 @@ export default function Visita({ id }: { id: string }) {
         visitante_direccion: '',
     });
     useEffect(() => {
-        fetch(`/visitas/${id}`)
+        fetch(route('visita', id))
             .then((response) => response.json())
             .then((data) => {
                 setVisita(data);
